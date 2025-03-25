@@ -1,11 +1,14 @@
 import unittest
+from unittest.mock import MagicMock
 from app.eshop import Product, ShoppingCart, Order
 
 class TestEshop(unittest.TestCase):
     def setUp(self):
         self.product = Product(name='Test', price=123.45, available_amount=21)
         self.cart = ShoppingCart()
-        self.order = Order()
+        self.mock_shipping_service = MagicMock()
+        self.mock_shipping_service.create_shipping.return_value = "fake_shipping_id"     
+        self.order = Order(cart=self.cart, shipping_service=self.mock_shipping_service)
     
     def tearDown(self):
         self.cart = ShoppingCart()
@@ -59,9 +62,8 @@ class TestEshop(unittest.TestCase):
     
     # Tests for class Order
     def test_place_order(self):
-        self.order.cart = self.cart
         self.cart.add_product(self.product, 10)
-        self.order.place_order()
+        self.order.place_order(shipping_type="standard") 
         self.assertEqual(self.product.available_amount, 11, 'Кількість продукту повинна бути зменшена')
         self.assertEqual(len(self.cart.products), 0, 'Корзина повинна бути порожньою')
 
