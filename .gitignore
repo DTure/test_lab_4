@@ -1,0 +1,5 @@
+venv
+.venv
+.localstack
+*/__pycache__
+.pytest_cache/
