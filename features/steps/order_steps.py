@@ -1,4 +1,5 @@
 from behave import given, when, then
+from unittest.mock import MagicMock
 from app.eshop import Order, ShoppingCart, Product
 
 @given("An empty shopping cart for order")
@@ -14,13 +15,14 @@ def add_product_to_cart_for_order(context, amount):
     try:
         context.cart.add_product(context.product, int(amount))
     except ValueError as e:
-        context.error = e  
+        context.error = e
 
 @when("I place the order")
 def place_order(context):
-    context.order = Order()
-    context.order.cart = context.cart
-    context.order.place_order()
+    mock_shipping_service = MagicMock()
+    mock_shipping_service.create_shipping.return_value = "fake_shipping_id"
+    context.order = Order(cart=context.cart, shipping_service=mock_shipping_service)
+    context.order.place_order(shipping_type="standard") 
 
 @then("The shopping cart is empty after order")
 def check_cart_empty_after_order(context):
