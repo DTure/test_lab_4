@@ -48,7 +48,7 @@ class ShoppingCart:
     def add_product(self, product: Product, amount: int):
         if not product.is_available(amount):
             raise ValueError(f"Product {product} has only {product.available_amount} items")
-        product.buy(amount)  
+        product.buy(amount)
         self.products[product] = self.products.get(product, 0) + amount
 
     def remove_product(self, product):
@@ -75,7 +75,11 @@ class Order:
             due_date = datetime.now(timezone.utc) + timedelta(seconds=3)
         product_ids = self.cart.submit_cart_order()
         print(due_date)
-        return self.shipping_service.create_shipping(shipping_type, product_ids, self.order_id, due_date)
+        return self.shipping_service.create_shipping(
+            shipping_type, 
+            product_ids, 
+            self.order_id, 
+            due_date)
     
 @dataclass()
 class Shipment:
