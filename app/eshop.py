@@ -58,7 +58,7 @@ class ShoppingCart:
     def submit_cart_order(self):
         product_ids = []
         for product, count in self.products.items():
-            product.buy(count)
+            #product.buy(count)
             product_ids.append(str(product))
         self.products.clear()
 
