@@ -76,9 +76,9 @@ class Order:
         product_ids = self.cart.submit_cart_order()
         print(due_date)
         return self.shipping_service.create_shipping(
-            shipping_type, 
-            product_ids, 
-            self.order_id, 
+            shipping_type,
+            product_ids,
+            self.order_id,
             due_date)
     
 @dataclass()
